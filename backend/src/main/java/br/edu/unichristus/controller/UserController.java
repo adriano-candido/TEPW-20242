@@ -1,6 +1,7 @@
 package br.edu.unichristus.controller;
 
 import br.edu.unichristus.data.dto.UserDTO;
+import br.edu.unichristus.data.dto.UserLowDTO;
 import br.edu.unichristus.data.model.User;
 import br.edu.unichristus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<User> findAll(){
+    public List<UserLowDTO> findAll(){
         return service.findAll();
     }
 

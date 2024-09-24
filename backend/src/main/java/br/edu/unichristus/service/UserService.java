@@ -1,6 +1,7 @@
 package br.edu.unichristus.service;
 
 import br.edu.unichristus.data.dto.UserDTO;
+import br.edu.unichristus.data.dto.UserLowDTO;
 import br.edu.unichristus.data.model.User;
 import br.edu.unichristus.dozer.DozerConverter;
 import br.edu.unichristus.repository.UserRepository;
@@ -30,8 +31,9 @@ public class UserService {
         return DozerConverter.parseObject(entityDTO, UserDTO.class);
     }
 
-    public List<User> findAll(){
-        return repository.findAll();
+    public List<UserLowDTO> findAll(){
+        return DozerConverter.parseListObjects(
+                repository.findAll(), UserLowDTO.class);
     }
 
     public void delete(Long id){
