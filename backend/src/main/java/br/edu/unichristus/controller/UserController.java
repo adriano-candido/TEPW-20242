@@ -1,5 +1,6 @@
 package br.edu.unichristus.controller;
 
+import br.edu.unichristus.data.dto.UserDTO;
 import br.edu.unichristus.data.model.User;
 import br.edu.unichristus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,12 @@ public class UserController {
     private UserService service;
 
     @PostMapping
-    public User create(@RequestBody User user){
+    public UserDTO create(@RequestBody UserDTO user){
         return service.save(user);
     }
 
     @PutMapping
-    public User update(@RequestBody User user){
+    public UserDTO update(@RequestBody UserDTO user){
         return service.save(user);
     }
 
