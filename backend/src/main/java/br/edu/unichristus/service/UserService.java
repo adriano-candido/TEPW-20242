@@ -4,8 +4,10 @@ import br.edu.unichristus.data.dto.UserDTO;
 import br.edu.unichristus.data.dto.UserLowDTO;
 import br.edu.unichristus.data.model.User;
 import br.edu.unichristus.dozer.DozerConverter;
+import br.edu.unichristus.exception.CommonsException;
 import br.edu.unichristus.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +40,16 @@ public class UserService {
 
     public void delete(Long id){
         repository.deleteById(id);
+    }
+
+    public UserDTO findById(Long id){
+        var entity = repository.findById(id);
+        if(entity.isEmpty()){
+            throw new CommonsException(HttpStatus.NOT_FOUND,
+                    "unichristus.service.uuser.notfound",
+                    "O usuário com a ID informada, não foi encontrado");
+        }
+        return DozerConverter.parseObject(entity.get(), UserDTO.class);
     }
 
 }
