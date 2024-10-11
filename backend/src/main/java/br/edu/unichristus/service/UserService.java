@@ -20,8 +20,9 @@ public class UserService {
 
     public UserDTO save(UserDTO user){
         if(user.getName().length() > 150){
-            System.out.println("Limite de caracteres de nome atingido");
-            return null;
+            throw new CommonsException(HttpStatus.BAD_REQUEST,
+                    "unichristus.service.user.badrequest",
+                    "O limite de caracteres do nome do usuário é 150");
         }
         //Converte UserDTO em User
         var entity = DozerConverter.parseObject(user, User.class);

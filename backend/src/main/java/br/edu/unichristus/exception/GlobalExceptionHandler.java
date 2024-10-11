@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<MessageDTO> handleException(Exception ex) {
         logger.error("Exception não tratada: ", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new MessageDTO("Exception não tratada: " + ex.toString(),
+                .body(new MessageDTO("Exception não tratada: ",
                         "unichristus.global.handler.exception"));
     }
 }
