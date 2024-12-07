@@ -15,6 +15,25 @@ export default function NewUser(){
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
+    const navigate = useNavigate();
+
+    async function createNewUser(e){
+        e.preventDefault();
+        const data = {
+            name,
+            email,
+            login,
+            password,
+        }
+        try{
+            await api.post('v1/user', data);
+            navigate(`/users`);
+        }catch(err){
+            alert(err.response.data.message);
+        }
+
+    }
+
 
     return(
         <div className="new-user-container">
@@ -28,7 +47,7 @@ export default function NewUser(){
                         Home
                     </Link>
                 </section>
-                <form>
+                <form onSubmit={createNewUser}>
                     <input 
                     value={name}
                     onChange={ e => setName(e.target.value)}
@@ -43,6 +62,7 @@ export default function NewUser(){
                     onChange={ e => setLogin(e.target.value)}
                     placeholder="Login" />
                     <input 
+                    type="password"
                     value={password}
                     onChange={ e => setPassword(e.target.value)}
                     placeholder="Password" />
