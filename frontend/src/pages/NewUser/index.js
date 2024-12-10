@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
 import api from '../../services/api';
@@ -9,6 +9,8 @@ import logoImage from '../../assets/logo.png';
 
 export default function NewUser(){
 
+    const {userId} = useParams();
+
     const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -17,7 +19,22 @@ export default function NewUser(){
 
     const navigate = useNavigate();
 
-    async function createNewUser(e){
+    useEffect(() => {
+        if(userId === '0') return;
+        try{
+            api.get(`v1/user/${userId}`).then(response =>{
+                setId(response.data.id);
+                setName(response.data.name);
+                setEmail(response.data.email);
+                setLogin(response.data.login);
+            })
+        }catch(err){
+            alert(err.response.data.message);
+            navigate("/users");
+        }
+    }, [userId, navigate]);
+
+    async function createOrEditUser(e){
         e.preventDefault();
         const data = {
             name,
@@ -26,7 +43,12 @@ export default function NewUser(){
             password,
         }
         try{
-            await api.post('v1/user', data);
+            if(userId === '0'){
+                await api.post('v1/user', data);
+            }else{
+                data.id = id;
+                await api.put('v1/user', data);
+            }
             navigate(`/users`);
         }catch(err){
             alert(err.response.data.message);
@@ -47,7 +69,7 @@ export default function NewUser(){
                         Home
                     </Link>
                 </section>
-                <form onSubmit={createNewUser}>
+                <form onSubmit={createOrEditUser}>
                     <input 
                     value={name}
                     onChange={ e => setName(e.target.value)}
